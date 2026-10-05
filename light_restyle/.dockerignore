@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.pytest_cache/
+models/
+build/
+dist/
+*.egg-info/
+temp_tf_saved_model/
+saved_model_temp/
+data/

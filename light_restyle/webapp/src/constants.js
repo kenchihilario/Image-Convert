@@ -1,0 +1,20 @@
+export const TOOL_MOVE = 'move';
+export const TOOL_BRUSH = 'brush';
+export const TOOL_ERASER = 'eraser';
+export const TOOL_CROP = 'crop';
+export const TOOL_MARQUEE_RECT = 'marquee-rect';
+export const TOOL_LASSO = 'lasso';
+export const TOOL_EYEDROPPER = 'eyedropper';
+export const TOOL_GRADIENT = 'gradient';
+export const TOOL_SHAPE_RECT = 'shape-rect';
+export const TOOL_SHAPE_ELLIPSE = 'shape-ellipse';
+export const TOOL_SHAPE_LINE = 'shape-line';
+export const TOOL_TEXT = 'text';
+export const DEFAULT_BRUSH_SIZE = 10;
+export const DEFAULT_BRUSH_COLOR = '#ff0000';
+export const EVENT_LAYER_ADDED = 'layerAdded';
+export const EVENT_LAYER_REMOVED = 'layerRemoved';
+export const EVENT_LAYER_CHANGED = 'layerChanged';
+export const EVENT_ACTIVE_LAYER = 'activeLayer';
+export const EVENT_HISTORY_CHANGED = 'history:changed';  
+ 

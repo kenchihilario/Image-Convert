@@ -1,0 +1,10 @@
+tensorflow
+tensorflow-hub
+pillow
+opencv-python
+numpy
+click
+setuptools
+
+[dev]
+pytest

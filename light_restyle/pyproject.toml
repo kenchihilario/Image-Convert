@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "light_restyle"
+version = "0.1.0"
+description = "Deterministic high-key image stylization tool."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "tensorflow",
+    "tensorflow-hub",
+    "pillow",
+    "opencv-python",
+    "numpy",
+    "click",
+    "setuptools"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
+
+[project.scripts]
+light-restyle = "light_restyle.cli:cli"

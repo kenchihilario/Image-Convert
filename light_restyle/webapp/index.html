@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Studio (Local AI)</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fabric.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <!-- TFJS and Magenta -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.15.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@magenta/image@0.2.1/dist/magentaimage.min.js"></script>
+</head>
+<body class="dark-theme">
+    <div id="app-container">
+        <!-- Top Menu -->
+        <nav id="top-menu">
+            <div class="menu-brand"><i class="fa-solid fa-palette"></i> Photo Studio</div>
+            <div class="menu-items">
+                <div class="menu-dropdown">
+                    <span>File</span>
+                    <div class="dropdown-content">
+                        <a href="#" id="menu-open"><i class="fa-solid fa-folder-open"></i> Open (.lasp)...</a>
+                        <a href="#" id="menu-save"><i class="fa-solid fa-save"></i> Save As (.lasp)...</a>
+                        <a href="#" id="menu-export"><i class="fa-solid fa-image"></i> Export as PNG...</a>
+                    </div>
+                </div>
+                <div class="menu-dropdown">
+                    <span>Filter</span>
+                    <div class="dropdown-content">
+                        <a href="#" id="menu-ai-style"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Light & Airy Restyle</a>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 5px; margin-left: 15px; border-left: 1px solid var(--border-color); padding-left: 15px;">
+                    <button class="panel-btn" id="btn-undo" title="Undo (Ctrl+Z)" disabled style="padding: 4px 8px; font-size: 12px;"><i class="fa-solid fa-undo"></i></button>
+                    <button class="panel-btn" id="btn-redo" title="Redo (Ctrl+Y)" disabled style="padding: 4px 8px; font-size: 12px;"><i class="fa-solid fa-redo"></i></button>
+                </div>
+            </div>
+            <div id="status-bar">Ready</div>
+        </nav>
+
+        <div id="main-content">
+            <!-- Left Toolbar -->
+            <aside id="toolbar">
+                <button class="tool-btn active" data-tool="move" title="Move Tool (V)"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
+                <button class="tool-btn" data-tool="marquee-rect" title="Rectangular Marquee (M)"><i class="fa-regular fa-square"></i></button>
+                <button class="tool-btn" data-tool="lasso" title="Lasso Tool (L)"><i class="fa-solid fa-arrow-pointer"></i></button>
+                <button class="tool-btn" data-tool="crop" title="Crop Tool (C)"><i class="fa-solid fa-crop"></i></button>
+                <button class="tool-btn" data-tool="brush" title="Brush Tool (B)"><i class="fa-solid fa-paint-brush"></i></button>
+                <button class="tool-btn" data-tool="eraser" title="Eraser Tool (E)"><i class="fa-solid fa-eraser"></i></button>
+                <button class="tool-btn" data-tool="eyedropper" title="Eyedropper Tool (I)"><i class="fa-solid fa-eye-dropper"></i></button>
+                <button class="tool-btn" data-tool="gradient" title="Gradient Tool (G)"><i class="fa-solid fa-fill-drip"></i></button>
+                <button class="tool-btn" data-tool="shape-rect" title="Rectangle Tool (U)"><i class="fa-regular fa-square"></i></button>
+                <button class="tool-btn" data-tool="shape-ellipse" title="Ellipse Tool (U)"><i class="fa-regular fa-circle"></i></button>
+                <button class="tool-btn" data-tool="shape-line" title="Line Tool (U)"><i class="fa-solid fa-minus"></i></button>
+                <button class="tool-btn" data-tool="text" title="Text Tool (T)"><i class="fa-solid fa-font"></i></button>
+                <div class="toolbar-divider"></div>
+                <!-- Color Picker -->
+                <div class="brush-settings" style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: 10px;">
+                    <input type="color" id="brush-color" value="#ff0000" title="Brush Color">
+                    <label style="font-size: 10px; color: #888;">Size <span id="brush-size-value">10px</span></label>
+                    <input type="range" id="brush-size" min="1" max="100" value="10" title="Brush Size">
+                    <label style="font-size: 10px; color: #888;">Opac</label>
+                    <input type="range" id="brush-opacity" min="0" max="1" step="0.01" value="1" title="Brush Opacity">
+                    <label style="font-size: 10px; color: #888;">Hard</label>
+                    <input type="range" id="brush-hardness" min="0" max="1" step="0.01" value="1" title="Brush Hardness">
+                </div>
+            </aside>
+
+            <!-- Center Canvas Workspace -->
+            <main id="workspace">
+                <div id="canvas-wrapper">
+                    <canvas id="main-canvas"></canvas>
+                    <div id="brush-cursor-ring" class="brush-cursor-ring"></div>
+                </div>
+            </main>
+
+            <!-- Right Panels (Layers, Transform & Adjustments) -->
+            <aside id="panels">
+                <div class="panel">
+                    <div class="panel-header"><i class="fa-solid fa-crop-simple"></i> Transform</div>
+                    <div class="panel-content" id="transform-panel">
+                        <div class="transform-grid">
+                            <div class="slider-group">
+                                <label>X</label>
+                                <input type="number" id="tf-x" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>Y</label>
+                                <input type="number" id="tf-y" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>Width</label>
+                                <input type="number" id="tf-w" value="0">
+                            </div>
+                            <div class="slider-group">
+                                <label>Height</label>
+                                <input type="number" id="tf-h" value="0">
+                            </div>
+                            <div class="slider-group" style="grid-column: span 2;">
+                                <label>Rotation (°)</label>
+                                <input type="number" id="tf-rot" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Adjustments Panel -->
+                <div class="panel">
+                    <div class="panel-header"><i class="fa-solid fa-sliders"></i> Adjustments</div>
+                    <div class="panel-content" id="adjustments-panel">
+                        <div class="slider-group">
+                            <label>Brightness</label>
+                            <input type="range" id="adj-brightness" min="-1" max="1" step="0.01" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <label>Contrast</label>
+                            <input type="range" id="adj-contrast" min="-1" max="1" step="0.01" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <label>Gamma</label>
+                            <input type="range" id="adj-gamma" min="0.01" max="2.2" step="0.01" value="1">
+                        </div>
+                        
+                        <hr style="border-color: var(--border-color); margin: 10px 0;">
+                        
+                        <div class="slider-group">
+                            <label>Hue</label>
+                            <input type="range" id="adj-hue" min="-1" max="1" step="0.01" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <label>Saturation</label>
+                            <input type="range" id="adj-saturation" min="-1" max="1" step="0.01" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <label>Lightness</label>
+                            <input type="range" id="adj-lightness" min="-1" max="1" step="0.01" value="0">
+                        </div>
+
+                        <hr style="border-color: var(--border-color); margin: 10px 0;">
+
+                        <div class="slider-group">
+                            <label>Blur</label>
+                            <input type="range" id="adj-blur" min="0" max="1" step="0.01" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <label>Noise</label>
+                            <input type="range" id="adj-noise" min="0" max="1000" step="1" value="0">
+                        </div>
+                        <div class="slider-group">
+                            <label>Pixelate</label>
+                            <input type="range" id="adj-pixelate" min="1" max="100" step="1" value="1">
+                        </div>
+                        
+                        <div style="margin-top: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px;">
+                            <button id="btn-filter-sepia" class="panel-btn" style="font-size: 11px;">Sepia</button>
+                            <button id="btn-filter-grayscale" class="panel-btn" style="font-size: 11px;">Grayscale</button>
+                            <button id="btn-filter-invert" class="panel-btn" style="font-size: 11px;">Invert</button>
+                            <button id="btn-filter-blackwhite" class="panel-btn" style="font-size: 11px;">B & W</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Layers Panel -->
+                <div class="panel flex-grow">
+                    <div class="panel-header">
+                        <span><i class="fa-solid fa-layer-group"></i> Layers</span>
+                    </div>
+                    <div class="panel-content no-pad" style="display: flex; flex-direction: column; height: 100%;">
+                        <div class="layer-controls" style="display: flex; gap: 10px; padding: 10px; border-bottom: 1px solid var(--border-color); background: var(--bg-panel);">
+                            <select id="layer-blend-mode" style="flex: 1; background: var(--bg-dark); color: #fff; border: 1px solid var(--border-color); border-radius: 4px; padding: 2px;">
+                                <option value="source-over">Normal</option>
+                                <option value="multiply">Multiply</option>
+                                <option value="screen">Screen</option>
+                                <option value="overlay">Overlay</option>
+                                <option value="darken">Darken</option>
+                                <option value="lighten">Lighten</option>
+                            </select>
+                            <div class="opacity-control" style="display: flex; align-items: center; gap: 5px;">
+                                <label style="font-size: 12px;">Op</label>
+                                <input type="number" id="layer-opacity-num" min="0" max="100" value="100" style="width: 50px; background: var(--bg-dark); color: #fff; border: 1px solid var(--border-color); border-radius: 4px; padding: 2px;">
+                            </div>
+                        </div>
+
+                        <div class="layer-list-container">
+                            <ul id="layers-list" class="layer-list">
+                                <!-- Layers populated by JS -->
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <button class="panel-btn" id="btn-add-layer" title="New Layer"><i class="fa-solid fa-plus"></i></button>
+                            <button class="panel-btn" id="btn-group-layer" title="Group Layers (Ctrl+G)"><i class="fa-regular fa-folder"></i></button>
+                            <button class="panel-btn" id="btn-mask-layer" title="Add Layer Mask"><i class="fa-regular fa-square-plus"></i></button>
+                            <button class="panel-btn" id="btn-delete-layer" title="Delete Layer"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- Hidden Elements -->
+    <input type="file" id="file-input" accept="image/*" hidden>
+    <canvas id="style-canvas" width="256" height="256" hidden></canvas>
+
+    <!-- Scripts -->
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>
