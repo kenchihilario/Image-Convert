@@ -58,16 +58,16 @@ describe('Paint & Draw Tools (Phase D)', () => {
     it('should draw a rectangle shape on mouse events', () => {
         shapes.activateShape('rect');
         
-        // Mouse Down
+
         mockEvents['mouse:down']({ e: {} });
         expect(mockCanvas.add).toHaveBeenCalled(); // Preview added
         
-        // Mouse Move
+
         mockCanvas.getPointer.mockReturnValue({ x: 200, y: 200 });
         mockEvents['mouse:move']({ e: {} });
         expect(mockCanvas.requestRenderAll).toHaveBeenCalled();
         
-        // Mouse Up
+
         mockEvents['mouse:up']({ e: {} });
         expect(state.addLayer).toHaveBeenCalled(); // Final layer added to state
     });
@@ -76,7 +76,7 @@ describe('Paint & Draw Tools (Phase D)', () => {
         eyedropper.activateEyedropper();
         mockEvents['mouse:down']({ e: {} });
         
-        // Should update the brush color input to the sampled color (red = #ff0000)
+
         expect(document.getElementById('brush-color').value).toBe('#ff0000');
     });
 });

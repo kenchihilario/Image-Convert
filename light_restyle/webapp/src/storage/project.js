@@ -7,9 +7,7 @@ export function serializeProject() {
     const canvas = getCanvas();
     if (!canvas) return null;
     
-    // We also need to store the order of our layers array, because Fabric's canvas.getObjects() 
-    // z-index order is the reverse of our UI representation. But loading from JSON will restore 
-    // the objects in the exact canvas z-index order, so we can just reverse it to rebuild our layers array.
+
     const json = canvas.toJSON(CUSTOM_PROPS);
     return JSON.stringify(json);
 }
@@ -62,26 +60,20 @@ export function restoreProject(jsonObj) {
     canvas.loadFromJSON(jsonObj, () => {
         canvas.requestRenderAll();
         
-        // Rebuild state.js layers array
-        // In our state.js, layers[0] is the top-most layer visually (highest z-index)
-        // Fabric's canvas.getObjects() returns objects ordered from bottom to top.
+
         const objects = canvas.getObjects();
         
-        // Clear existing layers cleanly
+
         const currentLayers = getLayers();
         currentLayers.forEach(l => removeLayer(l, false));
         
-        // Add them back to state
+
         objects.forEach(obj => {
-            // Because addLayer with bringToFront=true adds to the beginning (unshift) 
-            // and brings to front, iterating from bottom to top works perfectly.
+
             addLayer(obj, true);
         });
         
-        // Re-bind image filters since JSON serialization stringifies them but we need to re-apply 
-        // them if they rely on specific webgl contexts? Actually fabric's loadFromJSON handles 
-        // filter instantiation nicely if the fabric classes are registered.
-        // We will just call applyFilters on all images to be safe.
+
         objects.forEach(obj => {
             if (obj.type === 'image' && obj.filters && obj.filters.length > 0) {
                 obj.applyFilters();

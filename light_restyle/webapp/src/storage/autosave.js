@@ -9,7 +9,7 @@ export function setupAutosave() {
     on(EVENT_LAYER_ADDED, triggerAutosave);
     on(EVENT_LAYER_REMOVED, triggerAutosave);
     
-    // Use a slight timeout to ensure canvas is fully initialized before restoring
+
     setTimeout(() => {
         const saved = localStorage.getItem('autosave_project');
         if (saved) {

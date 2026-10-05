@@ -9,14 +9,12 @@ from light_restyle.config import (
     STYLE_GRADIENT_STOPS,
 )
 
-
 def _calculate_distances(size: int) -> np.ndarray:
     y_indices, x_indices = np.ogrid[:size, :size]
     center_y, center_x = size / 2, size / 2
     distances = np.sqrt((x_indices - center_x) ** 2 + (y_indices - center_y) ** 2)
     max_distance = np.sqrt(2 * (size / 2) ** 2)
     return np.clip(distances / max_distance, 0.0, 1.0)
-
 
 def _interpolate_colors(distances: np.ndarray) -> np.ndarray:
     size = distances.shape[0]
@@ -39,12 +37,10 @@ def _interpolate_colors(distances: np.ndarray) -> np.ndarray:
             
     return result
 
-
 def _add_texture_noise(image: np.ndarray) -> np.ndarray:
     noise = np.random.normal(0, NOISE_INTENSITY, image.shape).astype(np.float32)
     blurred_noise = cv2.GaussianBlur(noise, NOISE_BLUR_KERNEL, 0)
     return np.clip(image + blurred_noise, 0, 255)
-
 
 def generate_light_airy_reference(size: int = DEFAULT_STYLE_SIZE) -> np.ndarray:
     distances = _calculate_distances(size)

@@ -6,17 +6,17 @@
     <title>Photo Studio (Local AI)</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <!-- FontAwesome for icons -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Fabric.js -->
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
-    <!-- TFJS and Magenta -->
+    
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.15.0/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@magenta/image@0.2.1/dist/magentaimage.min.js"></script>
 </head>
 <body class="dark-theme">
     <div id="app-container">
-        <!-- Top Menu -->
+        
         <nav id="top-menu">
             <div class="menu-brand"><i class="fa-solid fa-palette"></i> Photo Studio</div>
             <div class="menu-items">
@@ -43,7 +43,7 @@
         </nav>
 
         <div id="main-content">
-            <!-- Left Toolbar -->
+            
             <aside id="toolbar">
                 <button class="tool-btn active" data-tool="move" title="Move Tool (V)"><i class="fa-solid fa-arrows-up-down-left-right"></i></button>
                 <button class="tool-btn" data-tool="marquee-rect" title="Rectangular Marquee (M)"><i class="fa-regular fa-square"></i></button>
@@ -58,7 +58,7 @@
                 <button class="tool-btn" data-tool="shape-line" title="Line Tool (U)"><i class="fa-solid fa-minus"></i></button>
                 <button class="tool-btn" data-tool="text" title="Text Tool (T)"><i class="fa-solid fa-font"></i></button>
                 <div class="toolbar-divider"></div>
-                <!-- Color Picker -->
+                
                 <div class="brush-settings" style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: 10px;">
                     <input type="color" id="brush-color" value="#ff0000" title="Brush Color">
                     <label style="font-size: 10px; color: #888;">Size <span id="brush-size-value">10px</span></label>
@@ -70,7 +70,7 @@
                 </div>
             </aside>
 
-            <!-- Center Canvas Workspace -->
+            
             <main id="workspace">
                 <div id="canvas-wrapper">
                     <canvas id="main-canvas"></canvas>
@@ -78,7 +78,7 @@
                 </div>
             </main>
 
-            <!-- Right Panels (Layers, Transform & Adjustments) -->
+            
             <aside id="panels">
                 <div class="panel">
                     <div class="panel-header"><i class="fa-solid fa-crop-simple"></i> Transform</div>
@@ -108,7 +108,7 @@
                     </div>
                 </div>
 
-                <!-- Adjustments Panel -->
+                
                 <div class="panel">
                     <div class="panel-header"><i class="fa-solid fa-sliders"></i> Adjustments</div>
                     <div class="panel-content" id="adjustments-panel">
@@ -164,7 +164,7 @@
                     </div>
                 </div>
 
-                <!-- Layers Panel -->
+                
                 <div class="panel flex-grow">
                     <div class="panel-header">
                         <span><i class="fa-solid fa-layer-group"></i> Layers</span>
@@ -187,7 +187,7 @@
 
                         <div class="layer-list-container">
                             <ul id="layers-list" class="layer-list">
-                                <!-- Layers populated by JS -->
+                                
                             </ul>
                         </div>
                         <div class="panel-footer">
@@ -202,11 +202,11 @@
         </div>
     </div>
     
-    <!-- Hidden Elements -->
+    
     <input type="file" id="file-input" accept="image/*" hidden>
     <canvas id="style-canvas" width="256" height="256" hidden></canvas>
 
-    <!-- Scripts -->
+    
     <script type="module" src="/src/main.js"></script>
 </body>
 </html>

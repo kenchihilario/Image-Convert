@@ -45,7 +45,7 @@ function onMouseDown(opt) {
     const brushOpacity = parseFloat(document.getElementById('brush-opacity').value) || 1;
     const strokeWidth = parseInt(document.getElementById('brush-size').value, 10) || 2;
     
-    // Convert color and opacity to rgba
+
     const r = parseInt(brushColor.slice(1, 3), 16);
     const g = parseInt(brushColor.slice(3, 5), 16);
     const b = parseInt(brushColor.slice(5, 7), 16);
@@ -123,7 +123,7 @@ function onMouseUp() {
         const canvas = getCanvas();
         const shape = currentShape;
         
-        // Remove it temporarily from canvas so we can dispatch the command
+
         canvas.remove(shape);
         
         executeCommand({

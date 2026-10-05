@@ -8,12 +8,10 @@ from light_restyle.style_transfer import ModelLoadError
 
 logger = get_logger("light_restyle.cli")
 
-
 @click.group()
 @click.version_option(version="0.1.0")
 def cli() -> None:
     pass
-
 
 @cli.command()
 @click.option("--input", "input_path", required=True, type=click.Path(exists=True, dir_okay=False))

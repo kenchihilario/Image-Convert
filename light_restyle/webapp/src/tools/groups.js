@@ -17,7 +17,7 @@ export function groupSelectedLayers() {
             const group = activeObj.toGroup();
             group.name = 'Group';
             
-            // Update state arrays
+
             objects.forEach(obj => removeLayer(obj, false));
             addLayer(group);
             

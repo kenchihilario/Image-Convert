@@ -7,7 +7,7 @@ export function addLayerMask() {
     if (!layer || !canvas) return;
 
     if (layer.clipPath) {
-        // Already has a mask, do we remove it? 
+
         return;
     }
 

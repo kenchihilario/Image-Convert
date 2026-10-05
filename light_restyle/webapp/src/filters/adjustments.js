@@ -14,11 +14,10 @@ export function setupAdjustments() {
             const activeLayer = getActiveLayer();
             if (!activeLayer || activeLayer.type !== 'image') return;
             
-            // Rebuild filters and apply
+
             const newValues = getSliderValues();
             
-            // To support history, we need a way to store the old filter state.
-            // But storing all values is easier.
+
             const oldValues = activeLayer.adjustmentValues || getEmptyValues();
             
             executeCommand({
@@ -27,7 +26,7 @@ export function setupAdjustments() {
             });
         });
         
-        // Also apply live preview on input
+
         document.getElementById(id).addEventListener('input', () => {
             const activeLayer = getActiveLayer();
             if (!activeLayer || activeLayer.type !== 'image') return;
@@ -37,7 +36,7 @@ export function setupAdjustments() {
 
     on(EVENT_ACTIVE_LAYER, syncAdjustmentsUI);
     
-    // Remove the old apply button if it still exists
+
     const btn = document.getElementById('btn-apply-filters');
     if (btn) btn.style.display = 'none';
 }
@@ -67,7 +66,7 @@ function getSliderValues() {
 function applyValuesToLayer(layer, values, syncUI = true) {
     layer.adjustmentValues = values;
     
-    // Keep filter gallery effects (Sepia, etc) which are toggled elsewhere
+
     const galleryFilters = layer.filters.filter(f => 
         ['Sepia', 'Grayscale', 'Invert', 'BlackWhite'].includes(f.type)
     );
@@ -79,8 +78,7 @@ function applyValuesToLayer(layer, values, syncUI = true) {
     if (values.gamma !== 1) layer.filters.push(new fabric.Image.filters.Gamma({ gamma: [values.gamma, values.gamma, values.gamma] }));
     if (values.hue !== 0) layer.filters.push(new fabric.Image.filters.HueRotation({ rotation: values.hue }));
     if (values.saturation !== 0) layer.filters.push(new fabric.Image.filters.Saturation({ saturation: values.saturation }));
-    // Note: Fabric doesn't have a native Lightness filter, we could simulate with Brightness or HSL wrapper. 
-    // Fabric's Brightness acts somewhat like Lightness. We'll skip Lightness or map to Brightness for now.
+
     
     if (values.blur > 0) layer.filters.push(new fabric.Image.filters.Blur({ blur: values.blur }));
     if (values.noise > 0) layer.filters.push(new fabric.Image.filters.Noise({ noise: values.noise }));

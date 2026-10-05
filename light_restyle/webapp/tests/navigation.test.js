@@ -17,7 +17,7 @@ describe('Navigation Tool', () => {
         };
         vi.spyOn(state, 'getCanvas').mockReturnValue(mockCanvas);
         
-        // Mock DOM
+
         document.body.innerHTML = '<div id="status-bar"></div>';
     });
 

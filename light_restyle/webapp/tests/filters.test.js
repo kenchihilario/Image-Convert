@@ -26,7 +26,6 @@ describe('Filters & Adjustments (Phase E)', () => {
         vi.spyOn(state, 'getActiveLayer').mockReturnValue(mockLayer);
         vi.spyOn(history, 'executeCommand').mockImplementation((cmd) => cmd.do());
 
-        // Mock UI elements
         uiValues = {
             'adj-brightness': '0.5',
             'adj-contrast': '0',

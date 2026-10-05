@@ -6,7 +6,6 @@ import tensorflow as tf
 
 from light_restyle.style_transfer import ModelLoadError, StyleTransferEngine, stylize
 
-
 @patch("light_restyle.style_transfer.hub.load")
 def test_style_transfer_engine_load_success(mock_load: MagicMock) -> None:
     mock_model = MagicMock()
@@ -18,7 +17,6 @@ def test_style_transfer_engine_load_success(mock_load: MagicMock) -> None:
     mock_load.assert_called_once()
     assert engine.model == mock_model
 
-
 @patch("light_restyle.style_transfer.hub.load")
 def test_style_transfer_engine_load_failure(mock_load: MagicMock) -> None:
     mock_load.side_effect = Exception("Download failed")
@@ -26,7 +24,6 @@ def test_style_transfer_engine_load_failure(mock_load: MagicMock) -> None:
     engine = StyleTransferEngine()
     with pytest.raises(ModelLoadError):
         engine._load_model()
-
 
 @patch("light_restyle.style_transfer.StyleTransferEngine._load_model")
 def test_stylize_function(mock_load_model: MagicMock) -> None:

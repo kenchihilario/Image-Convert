@@ -11,7 +11,6 @@ from light_restyle.io_utils import InvalidImageError, load_image, resize_preserv
 from light_restyle.pipeline import _blend_images, process_image_in_memory, run_pipeline
 from light_restyle.style_transfer import ModelLoadError
 
-
 class LightRestyleApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
@@ -175,7 +174,6 @@ class LightRestyleApp(tk.Tk):
         finally:
             self.run_btn.config(state="normal")
             self.slider.config(state="normal")
-
 
 def launch_gui() -> None:
     app = LightRestyleApp()

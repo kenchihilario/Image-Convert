@@ -16,7 +16,6 @@ from light_restyle.style_transfer import ModelLoadError, stylize
 
 logger = get_logger("light_restyle.pipeline")
 
-
 def _blend_images(original: np.ndarray, stylized: np.ndarray, intensity: float) -> np.ndarray:
     height, width = original.shape[:2]
     resized_stylized = cv2.resize(stylized, (width, height), interpolation=cv2.INTER_CUBIC)
@@ -29,7 +28,6 @@ def _blend_images(original: np.ndarray, stylized: np.ndarray, intensity: float) 
     return cv2.addWeighted(
         resized_stylized, intensity, original, 1.0 - intensity, 0
     ).astype(np.uint8)
-
 
 def process_image_in_memory(
     image: np.ndarray,
@@ -61,7 +59,6 @@ def process_image_in_memory(
     except Exception as error:
         logger.error("Color grading failed")
         raise
-
 
 def run_pipeline(
     input_path: str, 

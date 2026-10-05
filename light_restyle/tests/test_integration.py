@@ -10,12 +10,10 @@ FIXTURE_DIR: str = os.path.join(os.path.dirname(__file__), "fixtures")
 SAMPLE_INPUT: str = os.path.join(FIXTURE_DIR, "sample_input.jpg")
 SAMPLE_OUTPUT: str = os.path.join(FIXTURE_DIR, "integration_output.jpg")
 
-
 def _get_brightness_stats(image_path: str) -> tuple[float, float]:
     image = load_image(image_path)
     gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     return float(np.mean(gray)), float(np.std(gray))
-
 
 def test_end_to_end_light_airy_property() -> None:
     if os.path.exists(SAMPLE_OUTPUT):

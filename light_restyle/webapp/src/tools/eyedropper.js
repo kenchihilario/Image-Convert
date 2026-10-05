@@ -29,10 +29,10 @@ function sampleColor(opt) {
     const canvas = getCanvas();
     const ctx = canvas.getContext();
     
-    // Get mouse coordinates relative to the canvas
+
     const pointer = canvas.getPointer(opt.e);
     
-    // We need to account for retina displays (devicePixelRatio)
+
     const multiplier = canvas.getRetinaScaling();
     
     const x = Math.round(pointer.x * multiplier);

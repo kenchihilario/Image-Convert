@@ -1,4 +1,4 @@
-/* Dark Mode Photoshop Theme */
+
 :root {
     --bg-darker: #1e1e1e;
     --bg-dark: #252526;
@@ -31,7 +31,6 @@ body.dark-theme {
     height: 100vh;
 }
 
-/* Top Menu */
 #top-menu {
     height: 35px;
     background-color: var(--bg-dark);
@@ -101,14 +100,12 @@ body.dark-theme {
     color: var(--text-muted);
 }
 
-/* Main Layout */
 #main-content {
     display: flex;
     flex-grow: 1;
     overflow: hidden;
 }
 
-/* Left Toolbar */
 #toolbar {
     width: 45px;
     background-color: var(--bg-dark);
@@ -165,7 +162,6 @@ body.dark-theme {
     margin-top: 40px;
 }
 
-/* Workspace */
 #workspace {
     flex-grow: 1;
     background-color: var(--bg-darker);
@@ -181,7 +177,6 @@ body.dark-theme {
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAMUlEQVQ4T2NkYNggwEANCBEA0QBj0hQDUXwGA2lRDIxk0AAG0qIYGMmgwQwkRXEAAAAAAP//AwCR2hY8AAAAXUlEQVQ4T2NkYNggwEANCBEA0QBj0hQDUXwGA2lRDIxk0AAG0qIYGMmgwQwkRXEAAAAAAP//AwCR2hY8AAAAXUlEQVQ4T2NkYNggwEANCBEA0QBj0hQDUXwGA2lRDIxk0AAG0qIYGMmgwQwkRXEAAAAAAP//AwCR2hY8AAAAAElFTkSuQmCC');
 }
 
-/* Right Panels */
 #panels {
     width: 280px;
     background-color: var(--bg-dark);
@@ -270,7 +265,6 @@ body.dark-theme {
     margin-bottom: 0;
 }
 
-/* Layer List */
 .layer-list-container {
     height: 100%;
 }
@@ -318,7 +312,7 @@ body.dark-theme {
     cursor: pointer;
 }
 
- /* Brush Cursor Ring */
+ 
 .brush-cursor-ring {
     position: absolute;
     border: 1px solid rgba(255, 255, 255, 0.8);

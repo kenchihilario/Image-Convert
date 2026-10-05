@@ -1,4 +1,4 @@
-// Web App Script for GPU Accelerated Style Transfer
+
 
 const DOM = {
     dropZone: document.getElementById('drop-zone'),
@@ -36,14 +36,12 @@ function setupProceduralStyle() {
     const width = DOM.styleCanvas.width;
     const height = DOM.styleCanvas.height;
 
-    // Gradient background
     const grad = ctx.createLinearGradient(0, 0, width, height);
     grad.addColorStop(0, '#f9fafb');
     grad.addColorStop(1, '#e2e8f0');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, width, height);
 
-    // Procedural noise/texture simulation
     for (let i = 0; i < 8000; i++) {
         const x = Math.random() * width;
         const y = Math.random() * height;
@@ -97,7 +95,7 @@ async function handleFile(file) {
 
     const img = new Image();
     img.onload = async () => {
-        // Scale down to prevent WebGL Out-Of-Memory errors
+
         const maxDim = 800;
         let scale = 1.0;
         if (img.width > maxDim || img.height > maxDim) {
@@ -107,14 +105,13 @@ async function handleFile(file) {
         const w = Math.round(img.width * scale);
         const h = Math.round(img.height * scale);
 
-        // Render scaled image to canvas
         DOM.previewCanvas.width = w;
         DOM.previewCanvas.height = h;
         const ctx = DOM.previewCanvas.getContext('2d');
         ctx.drawImage(img, 0, 0, w, h);
         originalImageData = ctx.getImageData(0, 0, w, h);
         
-        // Yield to browser to show the raw image live
+
         await new Promise(r => requestAnimationFrame(r));
         
         await processImage(DOM.previewCanvas);
@@ -127,20 +124,19 @@ async function processImage(inputCanvas) {
         DOM.statusText.textContent = "Applying Style Transfer (GPU Processing)...";
         await new Promise(r => setTimeout(r, 50)); // give UI time to update text
         
-        // Ensure tensors are disposed to prevent WebGL memory leaks
+
         const rawStylized = await styleModel.stylize(inputCanvas, DOM.styleCanvas);
         
-        // Show raw stylization immediately
+
         const ctx = DOM.previewCanvas.getContext('2d');
         ctx.putImageData(rawStylized, 0, 0);
         
         DOM.statusText.textContent = "Applying Light & Airy Color Grade...";
         await new Promise(r => setTimeout(r, 50)); // yield to UI
         
-        // Read image data
+
         const styledPixels = rawStylized.data;
 
-        // Apply Color Grading (Lightness, Shadows, Highlights)
         const width = inputCanvas.width;
         const height = inputCanvas.height;
         styledImageData = new ImageData(
@@ -154,7 +150,6 @@ async function processImage(inputCanvas) {
             let g = styledPixels[i+1] / 255.0;
             let b = styledPixels[i+2] / 255.0;
 
-            // Simple lift/grading approx
             r = Math.min(1.0, r * 1.15 + 0.05);
             g = Math.min(1.0, g * 1.15 + 0.05);
             b = Math.min(1.0, b * 1.15 + 0.05);
@@ -206,5 +201,4 @@ function downloadImage() {
     link.click();
 }
 
-// Start
 initializeModel();

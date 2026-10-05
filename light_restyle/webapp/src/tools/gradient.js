@@ -76,7 +76,7 @@ function onMouseUp(opt) {
     let g = parseInt(brushColor.slice(3, 5), 16);
     let b = parseInt(brushColor.slice(5, 7), 16);
     
-    // Hex shorthand #F00 support just in case
+
     if (brushColor.length === 4) {
         r = parseInt(brushColor[1] + brushColor[1], 16);
         g = parseInt(brushColor[2] + brushColor[2], 16);

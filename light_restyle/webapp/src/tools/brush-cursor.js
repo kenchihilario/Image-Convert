@@ -7,7 +7,6 @@ export function initBrushCursor() {
     const canvas = getCanvas();
     if (!canvas) return;
 
-    // We can just listen to the wrapper mouse events for smoother tracking
     const wrapper = document.getElementById('canvas-wrapper');
     
     wrapper.addEventListener('mousemove', (e) => {

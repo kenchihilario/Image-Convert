@@ -4,7 +4,6 @@ export function exportCanvas() {
     const canvas = getCanvas();
     if (!canvas) return;
 
-    // Deselect everything so bounding boxes don't render in export
     canvas.discardActiveObject();
     canvas.requestRenderAll();
 

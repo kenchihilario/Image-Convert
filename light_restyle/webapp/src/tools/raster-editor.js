@@ -30,7 +30,7 @@ export function startRasterPaint(pointer, isEraser) {
     isPainting = true;
     isEraserMode = isEraser;
     
-    // Save original raw pixels for history, NOT the filtered output
+
     const el = currentLayer.getElement();
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = el.width || currentLayer.width;
@@ -38,13 +38,13 @@ export function startRasterPaint(pointer, isEraser) {
     tempCanvas.getContext('2d', { willReadFrequently: true }).drawImage(el, 0, 0, tempCanvas.width, tempCanvas.height);
     originalDataUrl = tempCanvas.toDataURL();
     
-    // Setup offscreen canvas for painting
+
     offscreenCanvas = document.createElement('canvas');
     offscreenCanvas.width = tempCanvas.width;
     offscreenCanvas.height = tempCanvas.height;
     offscreenCtx = offscreenCanvas.getContext('2d', { willReadFrequently: true });
     
-    // Draw current layer pixels to offscreen canvas
+
     offscreenCtx.drawImage(el, 0, 0, offscreenCanvas.width, offscreenCanvas.height);
     
     lastPointer = pointer;
@@ -94,13 +94,12 @@ function paintToOffscreen(pointer) {
     const brushHardness = parseFloat(document.getElementById('brush-hardness').value);
     const hexColor = document.getElementById('brush-color').value;
     
-    // Transform global pointer to local layer coordinates
+
     const invertedMatrix = fabric.util.invertTransform(currentLayer.calcTransformMatrix());
     const localLast = fabric.util.transformPoint(lastPointer, invertedMatrix);
     const localCurrent = fabric.util.transformPoint(pointer, invertedMatrix);
     
-    // Adjust for object origins (Fabric usually centers points around width/2 if origin is center, but default is left/top)
-    // If origin is center, top left is at -width/2. We need it relative to 0,0 top-left of image
+
     let offsetX = 0;
     let offsetY = 0;
     if (currentLayer.originX === 'center') offsetX = currentLayer.width / 2;
@@ -111,7 +110,6 @@ function paintToOffscreen(pointer) {
     const lx2 = localCurrent.x + offsetX;
     const ly2 = localCurrent.y + offsetY;
 
-    // Simulate hardness with shadow blur
     if (brushHardness < 1) {
         offscreenCtx.shadowBlur = (1 - brushHardness) * brushSize * 0.5;
         offscreenCtx.shadowColor = isEraserMode ? `rgba(255,255,255,${brushOpacity})` : hexToRgba(hexColor, brushOpacity);
@@ -135,15 +133,13 @@ function paintToOffscreen(pointer) {
         offscreenCtx.strokeStyle = hexToRgba(hexColor, brushOpacity);
     }
     
-    // Clipping for selections (if selection paths exist)
+
     const activeSelectionPath = window.__ACTIVE_SELECTION_PATH__; // Mocking global for now if needed. 
-    // We can fetch from state.js if a selection module tracks it.
+
     
     offscreenCtx.stroke();
     
-    // Push back to layer
-    // Create an image from offscreen canvas and assign it to element
-    // Fabric's setElement requires an image or canvas element
+
     const newCanvas = document.createElement('canvas');
     newCanvas.width = offscreenCanvas.width;
     newCanvas.height = offscreenCanvas.height;

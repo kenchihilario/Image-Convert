@@ -13,10 +13,8 @@ from light_restyle.config import (
     VALID_IMAGE_FORMATS,
 )
 
-
 class InvalidImageError(Exception):
     pass
-
 
 def load_image(path: str) -> np.ndarray:
     try:
@@ -32,11 +30,9 @@ def load_image(path: str) -> np.ndarray:
     image = image.convert("RGB")
     return np.array(image)
 
-
 def save_image(array: np.ndarray, path: str, quality: int = DEFAULT_JPEG_QUALITY) -> None:
     image = Image.fromarray(array)
     image.save(path, quality=quality)
-
 
 def _calculate_new_dimensions(width: int, height: int, max_dim: int) -> Tuple[int, int]:
     if width <= max_dim and height <= max_dim:
@@ -51,7 +47,6 @@ def _calculate_new_dimensions(width: int, height: int, max_dim: int) -> Tuple[in
 
     return new_width, new_height
 
-
 def resize_preserving_aspect(image: np.ndarray, max_dim: int = MAX_IMAGE_DIMENSION) -> np.ndarray:
     height, width, _ = image.shape
     new_width, new_height = _calculate_new_dimensions(width, height, max_dim)
@@ -60,7 +55,6 @@ def resize_preserving_aspect(image: np.ndarray, max_dim: int = MAX_IMAGE_DIMENSI
         return image
 
     return cv2.resize(image, (new_width, new_height), interpolation=cv2.INTER_AREA)
-
 
 def get_logger(name: str) -> logging.Logger:
     logger = logging.getLogger(name)

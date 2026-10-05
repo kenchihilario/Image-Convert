@@ -7,10 +7,8 @@ import tensorflow_hub as hub
 
 from light_restyle.config import MODEL_URL, MODEL_URL_FALLBACK
 
-
 class ModelLoadError(Exception):
     pass
-
 
 class StyleTransferEngine:
     _instance: Optional["StyleTransferEngine"] = None
@@ -57,7 +55,6 @@ class StyleTransferEngine:
         stylized_image = tf.squeeze(stylized_image, axis=0)
         stylized_image = stylized_image * 255.0
         return np.clip(stylized_image.numpy(), 0, 255).astype(np.uint8)
-
 
 def stylize(content: np.ndarray, style: np.ndarray) -> np.ndarray:
     engine = StyleTransferEngine.get_instance()

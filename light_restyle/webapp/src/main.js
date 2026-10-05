@@ -31,7 +31,7 @@ export function initApp() {
     setupTransformPanel();
     setupAutosave();
     
-    // Bind File menu
+
     document.getElementById('menu-open').addEventListener('click', (e) => { e.preventDefault(); loadProjectFromLasp(); });
     document.getElementById('menu-save').addEventListener('click', (e) => { e.preventDefault(); saveProjectAsLasp(); });
     document.getElementById('menu-export').addEventListener('click', (e) => { e.preventDefault(); exportCanvas(); });
@@ -55,7 +55,7 @@ function addDefaultBackground() {
     const canvas = document.getElementById('main-canvas');
     if (!canvas) return;
     
-    // Create an offscreen canvas to generate a blank image
+
     const bgCanvas = document.createElement('canvas');
     bgCanvas.width = 800;
     bgCanvas.height = 600;

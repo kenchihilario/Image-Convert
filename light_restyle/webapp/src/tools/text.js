@@ -53,11 +53,11 @@ function onMouseDown(opt) {
     
     deactivateText();
     
-    // Restore default selection mode so they can edit
+
     canvas.selection = true;
     canvas.forEachObject(obj => obj.selectable = true);
     
-    // Update UI toolbar visually
+
     const toolBtns = document.querySelectorAll('.tool-btn');
     toolBtns.forEach(b => b.classList.remove('active'));
     const moveBtn = document.querySelector('[data-tool="move"]');
